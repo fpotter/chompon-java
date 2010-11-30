@@ -6,6 +6,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 
+import com.chompon.client.AddCreditResponse;
 import com.chompon.client.ChomponClient;
 import com.chompon.client.CreateUserEmailZipResponse;
 import com.chompon.client.GetCouponInfoResponse;
@@ -620,6 +621,51 @@ public class Main {
             System.err.println("ERROR: " + ex);
         }
     }
+    
+    @SuppressWarnings("static-access")
+    public static void addCredit(String[] args) {
+        Options options = new Options();
+        
+        options.addOption(OptionBuilder.withLongOpt("pid").withDescription("Chompon Publisher ID").hasArg(true).isRequired().create());
+        options.addOption(OptionBuilder.withLongOpt("auth").withDescription("Chompon Auth Key").hasArg(true).isRequired().create());
+        
+        options.addOption(OptionBuilder.withLongOpt("uid").withDescription("User ID").hasArg(true).isRequired().create());
+        options.addOption(OptionBuilder.withLongOpt("amount").withDescription("Amount in USD (e.g. 44.23)").hasArg(true).isRequired().create());
+
+        CommandLine line;
+        
+        try {
+            CommandLineParser parser = new PosixParser();
+            line = parser.parse( options, args );
+        } catch (ParseException ex) {
+            System.err.println(ex.getMessage());
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("chompon.sh --get-rss-feed", options );
+            return;
+        }
+        
+        String pid = line.getOptionValue("pid");
+        String auth = line.getOptionValue("auth");
+        
+        if (pid == null && auth == null) {
+            System.out.println("ERROR: pid and auth must be supplied.");
+            return;
+        }
+
+        String uid = line.getOptionValue("uid");
+        String amount = line.getOptionValue("amount");
+        
+        try {
+            ChomponClient cc = new ChomponClient(pid, auth);
+            
+            AddCreditResponse resp = cc.addCredit(uid, amount);
+            
+            System.out.println(resp.toString());
+            
+        } catch (Exception ex) {
+            System.err.println("ERROR: " + ex);
+        }
+    }
 
     /**
      * Process top-level argument (i.e. the action)
@@ -642,6 +688,7 @@ public class Main {
         options.addOption(OptionBuilder.withLongOpt("refund-coupon").withDescription("Refund coupon").create());
         options.addOption(OptionBuilder.withLongOpt("get-deal-seo").withDescription("Get deal SEO HTML").create());
         options.addOption(OptionBuilder.withLongOpt("get-rss-feed").withDescription("Generate RSS Feed").create());
+        options.addOption(OptionBuilder.withLongOpt("add-credit").withDescription("Add Credit").create());
         
         if (args.length == 0) {
             HelpFormatter formatter = new HelpFormatter();
@@ -683,6 +730,8 @@ public class Main {
                     getDealSEO(remainingArgs);
                 } else if (line.hasOption("get-rss-feed")) {
                     getRssFeed(remainingArgs);
+                } else if (line.hasOption("add-credit")) {
+                    addCredit(remainingArgs);                    
                 } else {
                     HelpFormatter formatter = new HelpFormatter();
                     formatter.printHelp("admintool.sh", options );

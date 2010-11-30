@@ -407,6 +407,29 @@ public class ChomponClient {
         return response;
     }
     
+    /**
+     * Adds user credit that can be used for future purchases by this user
+     * 
+     * @param userId User ID
+     * @param creditAmount Credit amount in USD
+     * @return
+     * @throws IOException On any HTTP error or response parse error
+     */
+    public AddCreditResponse addCredit(String userId, String creditAmount) throws IOException {
+        Map<String, String> params = new HashMap<String, String>();
+
+        params.put("method", "addCredit");
+
+        params.put("uid", userId);
+        params.put("amount", creditAmount);
+
+        String response =  executeRequest(params);
+        
+        Gson gson = new GsonBuilder().create();
+        
+        return gson.fromJson(response, AddCreditResponse.class);
+    }
+    
     private String executeRequest(Map<String, String> params) throws IOException {
         
         params.put("pid", publisherId);
