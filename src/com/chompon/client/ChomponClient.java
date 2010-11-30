@@ -19,6 +19,11 @@ public class ChomponClient {
     private String publisherId;
     private String authKey;
     
+    /**
+     * Initialize the Chompon Client
+     * @param publisherId Chompon publisher ID
+     * @param authKey Chompon Auth Key
+     */
     public ChomponClient(String publisherId, String authKey) {
         this.publisherId = publisherId;
         this.authKey = authKey;
