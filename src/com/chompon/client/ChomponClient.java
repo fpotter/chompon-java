@@ -23,6 +23,17 @@ public class ChomponClient {
         this.authKey = authKey;
     }
     
+    /**
+     * Get information about deals. Filter by deal-id to look up one deal,
+     * publisher-id to look up all deals by a particular publisher, or store-id
+     * to look up deals from a store.
+     * 
+     * @param sid If not null, return deals for this store id
+     * @param did If not null, return a specific deal.
+     * @param showIfTipped Show whether or not a deal has tipped, and is on.
+     * @return
+     * @throws IOException On any HTTP error or response parse error.
+     */
     public GetDealsResponse getDeals(String sid, String did, boolean showIfTipped) throws IOException {
         Map<String, String> params = new HashMap<String, String>();
         
@@ -35,6 +46,8 @@ public class ChomponClient {
         if (did != null) {
             params.put("did", did);
         }
+        
+        params.put("ctipped", showIfTipped ? "true" : "false");
 
         String response =  executeRequest(params);
         
@@ -43,12 +56,53 @@ public class ChomponClient {
         return gson.fromJson(response, GetDealsResponse.class);
     }
     
+    /**
+     * Get info on deals in a specific zip code.
+     * 
+     * @param zip A five digit zip code.
+     * @param returnPastDeals If true, only information about past deals will be
+     *            shown. If false, only current deals will show.
+     * @return
+     * @throws IOException On any HTTP error or response parse error.
+     */
     public GetDealsResponse getDealsByZip(String zip, boolean returnPastDeals) throws IOException {
         Map<String, String> params = new HashMap<String, String>();
         
         params.put("method", "getDealsByZip");
         params.put("zip", zip);
         params.put("past", returnPastDeals ? "true" : "false");
+
+        String response =  executeRequest(params);
+        
+        Gson gson = new GsonBuilder().create();
+        
+        return gson.fromJson(response, GetDealsResponse.class);
+    }
+
+    /**
+     * Get information about specifc deal, for a specific user. Returns savings
+     * and final cost information for this specific user.
+     * 
+     * @param uid A user id, or external user id.
+     * @param did A specific deal id
+     * @param showIfTipped Show whether or not a deal has tipped, and is on.
+     * @return
+     * @throws IOException On any HTTP error or response parse error.
+     */
+    public GetDealsResponse getDealForUser(String uid, String did, boolean showIfTipped) throws IOException {
+        Map<String, String> params = new HashMap<String, String>();
+        
+        params.put("method", "getDealForUser");
+        
+        if (uid != null) {
+            params.put("uid", uid);
+        }
+        
+        if (did != null) {
+            params.put("did", did);
+        }
+        
+        params.put("ctipped", showIfTipped ? "true" : "false");
 
         String response =  executeRequest(params);
         
