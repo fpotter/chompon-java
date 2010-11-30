@@ -111,6 +111,33 @@ public class ChomponClient {
         return gson.fromJson(response, GetDealsResponse.class);
     }
     
+    /**
+     * Get info about a specific user. Must specify either UID or email
+     * 
+     * @param uid User's ID
+     * @param email User's Email Address
+     * @throws IOException On any HTTP error or response parse error.
+     */
+    public GetUserInfoResponse getUserInfo(String uid, String email) throws IOException {
+        Map<String, String> params = new HashMap<String, String>();
+        
+        params.put("method", "getUserInfo");
+        
+        if (uid != null) {
+            params.put("uid", uid);
+        }
+        
+        if (email != null) {
+            params.put("email", email);
+        }
+        
+        String response =  executeRequest(params);
+        
+        Gson gson = new GsonBuilder().create();
+        
+        return gson.fromJson(response, GetUserInfoResponse.class);
+    }
+    
     private String executeRequest(Map<String, String> params) throws IOException {
         
         params.put("pid", publisherId);
