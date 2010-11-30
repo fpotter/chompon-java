@@ -261,10 +261,13 @@ public class ChomponClient {
     
     /**
      * Issue coupons to a party for a deal, and returns info about the coupon.
+     * 
      * @param userId User ID to issue to
      * @param dealId Deal ID to issue from
-     * @param transactionId Optional transaction id if you want to put into our records a transaction ID for the deal
-     * @param referralId Optional referral id as passed to your payment page through the "rf" GET parameter
+     * @param transactionId Optional transaction id if you want to put into our
+     *            records a transaction ID for the deal
+     * @param referralId Optional referral id as passed to your payment page
+     *            through the "rf" GET parameter
      * @param count Number of coupons to issue
      * @return Coupon info
      * @throws IOException On any HTTP error or response parse error.
@@ -296,6 +299,7 @@ public class ChomponClient {
     
     /**
      * Get redeeming and checking coupon links
+     * 
      * @param storeId Store ID
      * @throws IOException On any HTTP error or response parse error.
      */
@@ -311,6 +315,27 @@ public class ChomponClient {
         Gson gson = new GsonBuilder().create();
         
         return gson.fromJson(response, GetStoreLinksResponse.class);
+    }
+    
+    /**
+     * Refund a coupon
+     * 
+     * @param couponId Coupond ID
+     * @return Info about the coupon
+     * @throws IOException On any HTTP error or response parse error.
+     */
+    public GetCouponInfoResponse refundCoupon(String couponId) throws IOException {
+        Map<String, String> params = new HashMap<String, String>();
+
+        params.put("method", "refundCoupon");
+
+        params.put("cd", couponId);
+
+        String response =  executeRequest(params);
+        
+        Gson gson = new GsonBuilder().create();
+        
+        return gson.fromJson(response, GetCouponInfoResponse.class);
     }
     
     private String executeRequest(Map<String, String> params) throws IOException {

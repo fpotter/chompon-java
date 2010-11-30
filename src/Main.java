@@ -480,6 +480,49 @@ public class Main {
         } catch (Exception ex) {
             System.err.println("ERROR: " + ex);
         }
+    }
+    
+    @SuppressWarnings("static-access")
+    public static void refundCoupon(String[] args) {
+        Options options = new Options();
+        
+        options.addOption(OptionBuilder.withLongOpt("pid").withDescription("Chompon Publisher ID").hasArg(true).isRequired().create());
+        options.addOption(OptionBuilder.withLongOpt("auth").withDescription("Chompon Auth Key").hasArg(true).isRequired().create());
+        
+        options.addOption(OptionBuilder.withLongOpt("cd").withDescription("Coupon ID").hasArg(true).isRequired().create());
+
+        CommandLine line;
+        
+        try {
+            CommandLineParser parser = new PosixParser();
+            line = parser.parse( options, args );
+        } catch (ParseException ex) {
+            System.err.println(ex.getMessage());
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("chompon.sh --create-user", options );
+            return;
+        }
+        
+        String pid = line.getOptionValue("pid");
+        String auth = line.getOptionValue("auth");
+        
+        if (pid == null && auth == null) {
+            System.out.println("ERROR: pid and auth must be supplied.");
+            return;
+        }
+        
+        String cd = line.getOptionValue("cd");
+        
+        try {
+            ChomponClient cc = new ChomponClient(pid, auth);
+            
+            GetCouponInfoResponse resp = cc.refundCoupon(cd);
+            
+            System.out.println(resp.toString());
+            
+        } catch (Exception ex) {
+            System.err.println("ERROR: " + ex);
+        }
     }  
 
     /**
@@ -500,6 +543,7 @@ public class Main {
         options.addOption(OptionBuilder.withLongOpt("issue-coupons").withDescription("Issue coupons").create());
         options.addOption(OptionBuilder.withLongOpt("create-user-email-zip").withDescription("Create user w/ only email and zip").create());
         options.addOption(OptionBuilder.withLongOpt("get-store-links").withDescription("Get redeem and coupon checking links").create());
+        options.addOption(OptionBuilder.withLongOpt("refund-coupon").withDescription("Refund coupon").create());
         
         if (args.length == 0) {
             HelpFormatter formatter = new HelpFormatter();
@@ -534,7 +578,9 @@ public class Main {
                 } else if (line.hasOption("create-user-email-zip")) {
                     createUserEmailZip(remainingArgs);                    
                 } else if (line.hasOption("get-store-links")) {
-                    getStoreLinks(remainingArgs);                    
+                    getStoreLinks(remainingArgs);
+                } else if (line.hasOption("refund-coupon")) {
+                    refundCoupon(remainingArgs);
                 } else {
                     HelpFormatter formatter = new HelpFormatter();
                     formatter.printHelp("admintool.sh", options );
