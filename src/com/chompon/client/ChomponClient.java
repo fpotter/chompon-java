@@ -338,6 +338,34 @@ public class ChomponClient {
         return gson.fromJson(response, GetCouponInfoResponse.class);
     }
     
+
+    /**
+     * Returns some HTML for displaying a specific deal, or deal in a zip.
+     * Either the zip or dealId must be specified.
+     * 
+     * @param dealId Deal ID
+     * @param zip Zip code
+     * @return Some HTML
+     * @throws IOException On any HTTP error or response parse error.
+     */
+    public String getDealSEO(String dealId, String zip) throws IOException {
+        Map<String, String> params = new HashMap<String, String>();
+
+        params.put("method", "getDealSEO");
+
+        if (dealId != null) {
+            params.put("did", dealId);
+        }
+        
+        if (zip != null) {
+            params.put("zip", zip);
+        }
+
+        String response =  executeRequest(params);
+        
+        return response;
+    }
+    
     private String executeRequest(Map<String, String> params) throws IOException {
         
         params.put("pid", publisherId);

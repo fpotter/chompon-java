@@ -524,6 +524,51 @@ public class Main {
             System.err.println("ERROR: " + ex);
         }
     }  
+    
+    @SuppressWarnings("static-access")
+    public static void getDealSEO(String[] args) {
+        Options options = new Options();
+        
+        options.addOption(OptionBuilder.withLongOpt("pid").withDescription("Chompon Publisher ID").hasArg(true).isRequired().create());
+        options.addOption(OptionBuilder.withLongOpt("auth").withDescription("Chompon Auth Key").hasArg(true).isRequired().create());
+        
+        options.addOption(OptionBuilder.withLongOpt("zip").withDescription("Zip code").hasArg(true).create());
+        options.addOption(OptionBuilder.withLongOpt("did").withDescription("Deal ID").hasArg(true).create());
+
+        CommandLine line;
+        
+        try {
+            CommandLineParser parser = new PosixParser();
+            line = parser.parse( options, args );
+        } catch (ParseException ex) {
+            System.err.println(ex.getMessage());
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("chompon.sh --create-user", options );
+            return;
+        }
+        
+        String pid = line.getOptionValue("pid");
+        String auth = line.getOptionValue("auth");
+        
+        if (pid == null && auth == null) {
+            System.out.println("ERROR: pid and auth must be supplied.");
+            return;
+        }
+        
+        String did = line.getOptionValue("did");
+        String zip = line.getOptionValue("zip");
+        
+        try {
+            ChomponClient cc = new ChomponClient(pid, auth);
+            
+            String resp = cc.getDealSEO(did, zip);
+            
+            System.out.println(resp.toString());
+            
+        } catch (Exception ex) {
+            System.err.println("ERROR: " + ex);
+        }
+    }  
 
     /**
      * Process top-level argument (i.e. the action)
@@ -544,6 +589,7 @@ public class Main {
         options.addOption(OptionBuilder.withLongOpt("create-user-email-zip").withDescription("Create user w/ only email and zip").create());
         options.addOption(OptionBuilder.withLongOpt("get-store-links").withDescription("Get redeem and coupon checking links").create());
         options.addOption(OptionBuilder.withLongOpt("refund-coupon").withDescription("Refund coupon").create());
+        options.addOption(OptionBuilder.withLongOpt("get-deal-seo").withDescription("Get deal SEO HTML").create());
         
         if (args.length == 0) {
             HelpFormatter formatter = new HelpFormatter();
@@ -581,6 +627,8 @@ public class Main {
                     getStoreLinks(remainingArgs);
                 } else if (line.hasOption("refund-coupon")) {
                     refundCoupon(remainingArgs);
+                } else if (line.hasOption("get-deal-seo")) {
+                    getDealSEO(remainingArgs);
                 } else {
                     HelpFormatter formatter = new HelpFormatter();
                     formatter.printHelp("admintool.sh", options );
