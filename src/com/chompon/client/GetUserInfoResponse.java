@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
-public class GetUserInfoResponse {
+public class GetUserInfoResponse extends ChomponResponse {
     
     public static class UserInfo {
         @SerializedName("UID")
@@ -47,8 +47,6 @@ public class GetUserInfoResponse {
                     + ", zip=" + zip + "]";
         }
     }
-    
-    public String result;
     
     public List<UserInfo> results;
     

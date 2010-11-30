@@ -2,7 +2,7 @@ package com.chompon.client;
 
 import java.util.List;
 
-public class GetStoreLinksResponse {
+public class GetStoreLinksResponse extends ChomponResponse {
     
     public static class Link {
         public String type;
@@ -14,7 +14,6 @@ public class GetStoreLinksResponse {
         }
     }
     
-    public String result;
     public List<Link> results;
     
     @Override

@@ -4,13 +4,9 @@ import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
-public class GetCouponInfoResponse {
+public class GetCouponInfoResponse extends ChomponResponse {
     
     public static class Coupon {
-//        [{"ID":"094614084","UID":"7","DID":"987","Created":1275921301,"Status":"0","Expires":1300755600,"Redeemed":1283130000,
-        //"Name":"$20 for Irresistable Ramen at Ippudo ($25 Value)",
-        //"FinePrint":"Limit 1 per table. Tax and Gratuity not included. Dine-in only. No cash back. Not valid with other offers.",
-        //"TransID":null,"RevenueID":"135","CostPaid":"0.00","ExtCode":null,"PID":null,"AID":null,"AAmount":null,"AAmount":null,"Shipping":null,"StatusText":"Coupon Unused"}]}
         @SerializedName("ID")
         public String couponId;
         @SerializedName("UID")
@@ -55,11 +51,7 @@ public class GetCouponInfoResponse {
                     + redeemed + ", revenueId=" + revenueId + ", shipping=" + shipping + ", status=" + status + ", statusText=" + statusText + ", transId="
                     + transId + ", uid=" + uid + "]";
         }
-        
-        
     }
-    
-    public String result;
     
     public List<Coupon> results;
     

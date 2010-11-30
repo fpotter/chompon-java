@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
-public class AddCreditResponse {
+public class AddCreditResponse extends ChomponResponse {
     
     public static class Credit {
         @SerializedName("UID")
@@ -19,7 +19,6 @@ public class AddCreditResponse {
         }
     }
     
-    public String result;
     public List<Credit> results;
     
     @Override

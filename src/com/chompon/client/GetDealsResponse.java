@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
-public class GetDealsResponse {
+public class GetDealsResponse extends ChomponResponse {
     
     public static class Deal {
         @SerializedName("Name")
@@ -117,8 +117,6 @@ public class GetDealsResponse {
                     + ", urlTitle=" + urlTitle + ", value=" + value + ", zipsOn=" + zipsOn + "]";
         }
     }
-    
-    public String result;
 
     public List<Deal> results;
     

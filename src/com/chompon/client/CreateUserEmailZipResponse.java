@@ -2,7 +2,7 @@ package com.chompon.client;
 
 import java.util.List;
 
-public class CreateUserEmailZipResponse {
+public class CreateUserEmailZipResponse extends ChomponResponse {
     
     public static class Result {
         public String result;
@@ -11,11 +11,8 @@ public class CreateUserEmailZipResponse {
         public String toString() {
             return "Result [result=" + result + "]";
         }
-        
-        
     }
-    
-    public String result;
+
     public List<Result> results;
     
     @Override
