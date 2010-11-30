@@ -191,6 +191,51 @@ public class ChomponClient {
         return gson.fromJson(response, GetCouponInfoResponse.class);
     }
     
+    /**
+     * Creates a new user. The call is idempotent: if the user already exists,
+     * no harm done! This call is most commonly used if you would like to handle
+     * your own user-base and you need to sync with our system so we can keep
+     * track of certificates.
+     * 
+     * @param firstName First name
+     * @param lastName Last name
+     * @param zip Zip code
+     * @param email Email Address
+     * @param password Password, can be null
+     * @param gender Either "male", "female", or null
+     * @param birthday Birthday in the form of MM-DD-YYYY
+     * @throws IOException On any HTTP error or response parse error.
+     */
+    public GetUserInfoResponse createUser(String firstName, String lastName, String zip, String email, String password, String gender, String birthday) throws IOException {
+
+        Map<String, String> params = new HashMap<String, String>();
+        
+        params.put("method", "createUser");
+        
+        params.put("fname", firstName);
+        params.put("lname", lastName);
+        params.put("zip", zip);
+        params.put("email", email);
+        
+        if (password != null) {
+            params.put("password", password);
+        }
+        
+        if (gender != null) {
+            params.put("gender", gender);
+        }
+        
+        if (birthday != null) {
+            params.put("birthd", birthday);
+        }
+        
+        String response =  executeRequest(params);
+        
+        Gson gson = new GsonBuilder().create();
+        
+        return gson.fromJson(response, GetUserInfoResponse.class);
+    }
+    
     private String executeRequest(Map<String, String> params) throws IOException {
         
         params.put("pid", publisherId);
