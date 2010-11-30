@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.io.IOUtils;
 
 import com.google.gson.Gson;
@@ -234,6 +235,41 @@ public class ChomponClient {
         Gson gson = new GsonBuilder().create();
         
         return gson.fromJson(response, GetUserInfoResponse.class);
+    }
+    
+    /**
+     * Issue coupons to a party for a deal, and returns info about the coupon.
+     * @param userId User ID to issue to
+     * @param dealId Deal ID to issue from
+     * @param transactionId Optional transaction id if you want to put into our records a transaction ID for the deal
+     * @param referralId Optional referral id as passed to your payment page through the "rf" GET parameter
+     * @param count Number of coupons to issue
+     * @return Coupon info
+     * @throws IOException On any HTTP error or response parse error.
+     */
+    public GetCouponInfoResponse issueCoupon(String userId, String dealId, String transactionId, String referralId, int count) throws IOException {
+        Map<String, String> params = new HashMap<String, String>();
+        
+        params.put("method", "issueCoupons");
+
+        params.put("uid", userId);
+        params.put("did", dealId);
+        
+        if (transactionId != null) {
+            params.put("td", transactionId);
+        }
+
+        if (referralId != null) {
+            params.put("rf", referralId);
+        }
+
+        params.put("count", Integer.toString(count));
+
+        String response =  executeRequest(params);
+        
+        Gson gson = new GsonBuilder().create();
+        
+        return gson.fromJson(response, GetCouponInfoResponse.class);
     }
     
     private String executeRequest(Map<String, String> params) throws IOException {

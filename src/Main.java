@@ -338,6 +338,57 @@ public class Main {
         } catch (Exception ex) {
             System.err.println("ERROR: " + ex);
         }
+    }
+    
+    @SuppressWarnings("static-access")
+    public static void issueCoupons(String[] args) {
+        Options options = new Options();
+        
+        options.addOption(OptionBuilder.withLongOpt("pid").withDescription("Chompon Publisher ID").hasArg(true).isRequired().create());
+        options.addOption(OptionBuilder.withLongOpt("auth").withDescription("Chompon Auth Key").hasArg(true).isRequired().create());
+        
+        options.addOption(OptionBuilder.withLongOpt("uid").withDescription("User ID").hasArg(true).isRequired().create());
+        options.addOption(OptionBuilder.withLongOpt("did").withDescription("Deal ID").hasArg(true).isRequired().create());
+        options.addOption(OptionBuilder.withLongOpt("td").withDescription("Transaction ID (optional)").hasArg(true).create());
+        options.addOption(OptionBuilder.withLongOpt("rf").withDescription("Referral ID (optional)").hasArg(true).create());
+        options.addOption(OptionBuilder.withLongOpt("count").withDescription("Count (optional, default is 1)").hasArg(true).create());
+        
+        CommandLine line;
+        
+        try {
+            CommandLineParser parser = new PosixParser();
+            line = parser.parse( options, args );
+        } catch (ParseException ex) {
+            System.err.println(ex.getMessage());
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("chompon.sh --create-user", options );
+            return;
+        }
+        
+        String pid = line.getOptionValue("pid");
+        String auth = line.getOptionValue("auth");
+        
+        if (pid == null && auth == null) {
+            System.out.println("ERROR: pid and auth must be supplied.");
+            return;
+        }
+        
+        String uid = line.getOptionValue("uid");
+        String did = line.getOptionValue("did");
+        String td = line.getOptionValue("td");
+        String rf = line.getOptionValue("rf");
+        int count = (line.getOptionValue("count") == null) ? 1 : Integer.parseInt(line.getOptionValue("count")); 
+        
+        try {
+            ChomponClient cc = new ChomponClient(pid, auth);
+            
+            GetCouponInfoResponse resp = cc.issueCoupon(uid, did, td, rf, count);
+            
+            System.out.println(resp.toString());
+            
+        } catch (Exception ex) {
+            System.err.println("ERROR: " + ex);
+        }
     }  
 
     /**
@@ -355,6 +406,7 @@ public class Main {
         options.addOption(OptionBuilder.withLongOpt("get-user-from-email").withDescription("Get user info by email").create());
         options.addOption(OptionBuilder.withLongOpt("get-coupon-info").withDescription("Get coupon info").create());
         options.addOption(OptionBuilder.withLongOpt("create-user").withDescription("Create user").create());
+        options.addOption(OptionBuilder.withLongOpt("issue-coupons").withDescription("Issue coupons").create());
         
         if (args.length == 0) {
             HelpFormatter formatter = new HelpFormatter();
@@ -384,6 +436,8 @@ public class Main {
                     getCouponInfo(remainingArgs);
                 } else if (line.hasOption("create-user")) {
                     createUser(remainingArgs);
+                } else if (line.hasOption("issue-coupons")) {
+                    issueCoupons(remainingArgs);
                 } else {
                     HelpFormatter formatter = new HelpFormatter();
                     formatter.printHelp("admintool.sh", options );
