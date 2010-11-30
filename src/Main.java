@@ -193,6 +193,49 @@ public class Main {
         }
     }
     
+    @SuppressWarnings("static-access")
+    public static void getUserFromEmail(String[] args) {
+        Options options = new Options();
+        
+        options.addOption(OptionBuilder.withLongOpt("pid").withDescription("Chompon Publisher ID").hasArg(true).isRequired().create());
+        options.addOption(OptionBuilder.withLongOpt("auth").withDescription("Chompon Auth Key").hasArg(true).isRequired().create());
+        
+        options.addOption(OptionBuilder.withLongOpt("email").withDescription("Email Address").hasArg(true).isRequired().create());
+
+        CommandLine line;
+        
+        try {
+            CommandLineParser parser = new PosixParser();
+            line = parser.parse( options, args );
+        } catch (ParseException ex) {
+            System.err.println(ex.getMessage());
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("chompon.sh --get-user-from-email", options );
+            return;
+        }
+        
+        String pid = line.getOptionValue("pid");
+        String auth = line.getOptionValue("auth");
+        
+        if (pid == null && auth == null) {
+            System.out.println("ERROR: pid and auth must be supplied.");
+            return;
+        }
+        
+        String email = line.getOptionValue("email");
+        
+        try {
+            ChomponClient cc = new ChomponClient(pid, auth);
+            
+            GetUserInfoResponse resp = cc.getUserFromEmail(email);
+            
+            System.out.println(resp.toString());
+            
+        } catch (Exception ex) {
+            System.err.println("ERROR: " + ex);
+        }
+    }    
+    
     /**
      * Process top-level argument (i.e. the action)
      */
@@ -205,6 +248,7 @@ public class Main {
         options.addOption(OptionBuilder.withLongOpt("get-deals-by-zip").withDescription("Get a list of deals by zip").create());
         options.addOption(OptionBuilder.withLongOpt("get-deal-for-user").withDescription("Get deal info for a specific user").create());
         options.addOption(OptionBuilder.withLongOpt("get-user-info").withDescription("Get user info").create());
+        options.addOption(OptionBuilder.withLongOpt("get-user-from-email").withDescription("Get user info by email").create());
         
         if (args.length == 0) {
             HelpFormatter formatter = new HelpFormatter();
@@ -228,6 +272,8 @@ public class Main {
                     getDealForUser(remainingArgs);
                 } else if (line.hasOption("get-user-info")) {
                     getUserInfo(remainingArgs);
+                } else if (line.hasOption("get-user-from-email")) {
+                    getUserFromEmail(remainingArgs);
                 } else {
                     HelpFormatter formatter = new HelpFormatter();
                     formatter.printHelp("admintool.sh", options );

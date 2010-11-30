@@ -138,6 +138,26 @@ public class ChomponClient {
         return gson.fromJson(response, GetUserInfoResponse.class);
     }
     
+    /**
+     * Returns user info from email address.
+     * @param email Email Address of user
+     * @return
+     * @throws IOException On any HTTP error or response parse error.
+     */
+    public GetUserInfoResponse getUserFromEmail(String email) throws IOException {
+        Map<String, String> params = new HashMap<String, String>();
+        
+        params.put("method", "getUserFromEmail");
+        
+        params.put("email", email);
+        
+        String response =  executeRequest(params);
+        
+        Gson gson = new GsonBuilder().create();
+        
+        return gson.fromJson(response, GetUserInfoResponse.class);
+    }
+    
     private String executeRequest(Map<String, String> params) throws IOException {
         
         params.put("pid", publisherId);
