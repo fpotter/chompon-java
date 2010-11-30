@@ -8,7 +8,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.io.IOUtils;
 
 import com.google.gson.Gson;
@@ -293,6 +292,25 @@ public class ChomponClient {
         Gson gson = new GsonBuilder().create();
         
         return gson.fromJson(response, GetCouponInfoResponse.class);
+    }
+    
+    /**
+     * Get redeeming and checking coupon links
+     * @param storeId Store ID
+     * @throws IOException On any HTTP error or response parse error.
+     */
+    public GetStoreLinksResponse getStoreLinks(String storeId) throws IOException {
+        Map<String, String> params = new HashMap<String, String>();
+        
+        params.put("method", "getStoreLinks");
+
+        params.put("sid", storeId);
+
+        String response =  executeRequest(params);
+        
+        Gson gson = new GsonBuilder().create();
+        
+        return gson.fromJson(response, GetStoreLinksResponse.class);
     }
     
     private String executeRequest(Map<String, String> params) throws IOException {

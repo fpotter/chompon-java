@@ -10,4 +10,5 @@
 #./chompon.sh --get-coupon-info --pid 12 --auth 26a4171b3c38b868 --cid 094614084
 #./chompon.sh --create-user --pid 12 --auth 26a4171b3c38b868 --fname Fred --lname Potter --zip 94118 --email fpotter@gmail.com --password chompon --gender male --birthday 04-01-1982
 #./chompon.sh --issue-coupons --pid 12 --auth 26a4171b3c38b868 --did 987 --uid 8
-./chompon.sh --create-user-email-zip --pid 12 --auth 26a4171b3c38b868 --email fpotter@gmail.com --zip 94118
+#./chompon.sh --create-user-email-zip --pid 12 --auth 26a4171b3c38b868 --email fpotter@gmail.com --zip 94118
+./chompon.sh --get-store-links --pid 12 --auth 26a4171b3c38b868 --sid 3
