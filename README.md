@@ -1,7 +1,7 @@
 
 # Chompon Client for Java
 
-This is a Java wrapper around [Chompon's API](http://www.chompon.com/apidoc).  For now, just look at [ChomponClient.java](https://github.com/fpotter/chompon-java/blob/master/src/com/chompon/client/ChomponClient.java) see how it works.
+This is a Java wrapper around [Chompon's API](http://www.chompon.com/apidoc).  For now, just look at [ChomponClient.java](https://github.com/fpotter/chompon-java/blob/master/src/com/chompon/client/ChomponClient.java) to see how it works.
 
 ## Usage
 
