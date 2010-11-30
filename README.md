@@ -9,7 +9,7 @@ This is a Java wrapper around [Chompon's API](http://www.chompon.com/apidoc).  F
     
     GetDealsResponse response = cc.getDealsByZip("94303");
     
-    if (response.result.equals("good")) {
+    if (response.wasSuccessful()) {
         for (GetDealsResponse.Deal deal : response.results) {
             String name = deal.name;
             String value = deal.value;
