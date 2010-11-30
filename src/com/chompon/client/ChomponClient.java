@@ -237,6 +237,29 @@ public class ChomponClient {
         return gson.fromJson(response, GetUserInfoResponse.class);
     }
     
+    public CreateUserEmailZipResponse createUserEmailZip(String zip, String email) throws IOException {
+        Map<String, String> params = new HashMap<String, String>();
+        
+        params.put("method", "createUserEmailZip");
+        
+        params.put("zip", zip);
+        params.put("email", email);
+        
+        if (zip != null) {
+            params.put("zip", zip);
+        }
+        
+        if (email != null) {
+            params.put("email", email);
+        }
+        
+        String response =  executeRequest(params);
+        
+        Gson gson = new GsonBuilder().create();
+        
+        return gson.fromJson(response, CreateUserEmailZipResponse.class);
+    }
+    
     /**
      * Issue coupons to a party for a deal, and returns info about the coupon.
      * @param userId User ID to issue to

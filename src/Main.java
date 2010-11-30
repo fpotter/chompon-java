@@ -7,6 +7,7 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 
 import com.chompon.client.ChomponClient;
+import com.chompon.client.CreateUserEmailZipResponse;
 import com.chompon.client.GetCouponInfoResponse;
 import com.chompon.client.GetDealsResponse;
 import com.chompon.client.GetUserInfoResponse;
@@ -341,6 +342,52 @@ public class Main {
     }
     
     @SuppressWarnings("static-access")
+    public static void createUserEmailZip(String[] args) {
+        Options options = new Options();
+        
+        options.addOption(OptionBuilder.withLongOpt("pid").withDescription("Chompon Publisher ID").hasArg(true).isRequired().create());
+        options.addOption(OptionBuilder.withLongOpt("auth").withDescription("Chompon Auth Key").hasArg(true).isRequired().create());
+        
+        options.addOption(OptionBuilder.withLongOpt("zip").withDescription("Zip code").hasArg(true).isRequired().create());
+        options.addOption(OptionBuilder.withLongOpt("email").withDescription("Email address").hasArg(true).isRequired().create());
+        
+        CommandLine line;
+        
+        try {
+            CommandLineParser parser = new PosixParser();
+            line = parser.parse( options, args );
+        } catch (ParseException ex) {
+            System.err.println(ex.getMessage());
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("chompon.sh --create-user", options );
+            return;
+        }
+        
+        String pid = line.getOptionValue("pid");
+        String auth = line.getOptionValue("auth");
+        
+        if (pid == null && auth == null) {
+            System.out.println("ERROR: pid and auth must be supplied.");
+            return;
+        }
+        
+        String zip = line.getOptionValue("zip");
+        String email = line.getOptionValue("email");
+        
+        
+        try {
+            ChomponClient cc = new ChomponClient(pid, auth);
+            
+            CreateUserEmailZipResponse resp = cc.createUserEmailZip(zip, email);
+            
+            System.out.println(resp.toString());
+            
+        } catch (Exception ex) {
+            System.err.println("ERROR: " + ex);
+        }
+    }
+    
+    @SuppressWarnings("static-access")
     public static void issueCoupons(String[] args) {
         Options options = new Options();
         
@@ -407,6 +454,7 @@ public class Main {
         options.addOption(OptionBuilder.withLongOpt("get-coupon-info").withDescription("Get coupon info").create());
         options.addOption(OptionBuilder.withLongOpt("create-user").withDescription("Create user").create());
         options.addOption(OptionBuilder.withLongOpt("issue-coupons").withDescription("Issue coupons").create());
+        options.addOption(OptionBuilder.withLongOpt("create-user-email-zip").withDescription("Create user w/ only email and zip").create());
         
         if (args.length == 0) {
             HelpFormatter formatter = new HelpFormatter();
@@ -438,6 +486,8 @@ public class Main {
                     createUser(remainingArgs);
                 } else if (line.hasOption("issue-coupons")) {
                     issueCoupons(remainingArgs);
+                } else if (line.hasOption("create-user-email-zip")) {
+                    createUserEmailZip(remainingArgs);                    
                 } else {
                     HelpFormatter formatter = new HelpFormatter();
                     formatter.printHelp("admintool.sh", options );
