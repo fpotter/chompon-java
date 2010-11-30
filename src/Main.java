@@ -120,7 +120,7 @@ public class Main {
         } catch (ParseException ex) {
             System.err.println(ex.getMessage());
             HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp("chompon.sh --get-deals-by-zip", options );
+            formatter.printHelp("chompon.sh --get-deal-by-user", options );
             return;
         }
         
