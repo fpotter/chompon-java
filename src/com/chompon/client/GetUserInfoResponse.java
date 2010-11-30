@@ -56,7 +56,7 @@ public class GetUserInfoResponse {
     public String toString() {
         StringBuffer sb = new StringBuffer();
         
-        sb.append("GetUserInfoResponse [result=" + result + ", results=");
+        sb.append("GetUserInfoResponse [result=" + result + ", results=\n");
         
         for (UserInfo result : results) {
             sb.append("  " + result.toString() + "\n");

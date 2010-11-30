@@ -140,6 +140,7 @@ public class ChomponClient {
     
     /**
      * Returns user info from email address.
+     * 
      * @param email Email Address of user
      * @return
      * @throws IOException On any HTTP error or response parse error.
@@ -156,6 +157,38 @@ public class ChomponClient {
         Gson gson = new GsonBuilder().create();
         
         return gson.fromJson(response, GetUserInfoResponse.class);
+    }
+    
+    /**
+     * Get info about a coupon
+     * 
+     * @param uid User ID
+     * @param did Deal ID (can be null)
+     * @param couponId Coupon ID (can be null)
+     * @throws IOException On any HTTP error or response parse error.
+     */
+    public GetCouponInfoResponse getCouponInfo(String uid, String did, String couponId) throws IOException {
+        Map<String, String> params = new HashMap<String, String>();
+        
+        params.put("method", "getCouponInfo");
+        
+        if (uid != null) {
+            params.put("uid", uid);
+        }
+        
+        if (did != null) {
+            params.put("did", did);
+        }
+
+        if (couponId != null) {
+            params.put("cid", couponId);
+        }
+
+        String response =  executeRequest(params);
+        
+        Gson gson = new GsonBuilder().create();
+        
+        return gson.fromJson(response, GetCouponInfoResponse.class);
     }
     
     private String executeRequest(Map<String, String> params) throws IOException {

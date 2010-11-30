@@ -7,6 +7,7 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 
 import com.chompon.client.ChomponClient;
+import com.chompon.client.GetCouponInfoResponse;
 import com.chompon.client.GetDealsResponse;
 import com.chompon.client.GetUserInfoResponse;
 
@@ -234,7 +235,54 @@ public class Main {
         } catch (Exception ex) {
             System.err.println("ERROR: " + ex);
         }
-    }    
+    }
+    
+    @SuppressWarnings("static-access")
+    public static void getCouponInfo(String[] args) {
+        Options options = new Options();
+        
+        options.addOption(OptionBuilder.withLongOpt("pid").withDescription("Chompon Publisher ID").hasArg(true).isRequired().create());
+        options.addOption(OptionBuilder.withLongOpt("auth").withDescription("Chompon Auth Key").hasArg(true).isRequired().create());
+        
+        options.addOption(OptionBuilder.withLongOpt("uid").withDescription("Filter by User ID").hasArg(true).create());
+        options.addOption(OptionBuilder.withLongOpt("did").withDescription("Filter by Deal ID").hasArg(true).create());
+        options.addOption(OptionBuilder.withLongOpt("cid").withDescription("Filter by Coupon ID").hasArg(true).create());
+
+        CommandLine line;
+        
+        try {
+            CommandLineParser parser = new PosixParser();
+            line = parser.parse( options, args );
+        } catch (ParseException ex) {
+            System.err.println(ex.getMessage());
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("chompon.sh --get-coupon-info", options );
+            return;
+        }
+        
+        String pid = line.getOptionValue("pid");
+        String auth = line.getOptionValue("auth");
+        
+        if (pid == null && auth == null) {
+            System.out.println("ERROR: pid and auth must be supplied.");
+            return;
+        }
+        
+        String uid = line.getOptionValue("uid");
+        String did = line.getOptionValue("did");
+        String cid = line.getOptionValue("cid");
+        
+        try {
+            ChomponClient cc = new ChomponClient(pid, auth);
+            
+            GetCouponInfoResponse resp = cc.getCouponInfo(uid, did, cid);
+            
+            System.out.println(resp.toString());
+            
+        } catch (Exception ex) {
+            System.err.println("ERROR: " + ex);
+        }
+    }  
     
     /**
      * Process top-level argument (i.e. the action)
@@ -249,6 +297,7 @@ public class Main {
         options.addOption(OptionBuilder.withLongOpt("get-deal-for-user").withDescription("Get deal info for a specific user").create());
         options.addOption(OptionBuilder.withLongOpt("get-user-info").withDescription("Get user info").create());
         options.addOption(OptionBuilder.withLongOpt("get-user-from-email").withDescription("Get user info by email").create());
+        options.addOption(OptionBuilder.withLongOpt("get-coupon-info").withDescription("Get coupon info").create());
         
         if (args.length == 0) {
             HelpFormatter formatter = new HelpFormatter();
@@ -274,6 +323,8 @@ public class Main {
                     getUserInfo(remainingArgs);
                 } else if (line.hasOption("get-user-from-email")) {
                     getUserFromEmail(remainingArgs);
+                } else if (line.hasOption("get-coupon-info")) {
+                    getCouponInfo(remainingArgs);
                 } else {
                     HelpFormatter formatter = new HelpFormatter();
                     formatter.printHelp("admintool.sh", options );

@@ -116,40 +116,6 @@ public class GetDealsResponse {
                     + ", rewardYelp=" + rewardYelp + ", shipData=" + shipData + ", sid=" + sid + ", startTime=" + startTime + ", tipPoint=" + tipPoint
                     + ", urlTitle=" + urlTitle + ", value=" + value + ", zipsOn=" + zipsOn + "]";
         }
-
-//      "RewardEmail":"0",
-//      "PID":"12",
-//      "ImageUrl":null,
-//      "CertNote":"",
-//      "RewardFacebook":"5",
-//      "TipPoint":null,
-//      "ImageVersion":"1",
-//      "Ref3":null,
-//      "Ref4":null,
-//      "RewardTwitter":"5",
-//      "ImageSmall":"http:\/\/www.chompon.com\/uploads\/stores\/1_s.jpg",
-//      "Image":"http:\/\/www.chompon.com\/uploads\/stores\/1.jpg",
-//      "IsPoints":"0",
-//      "Overview":"Chef Nobu Matsuhisa has created a whole new trend in Japanese cuisine over at Nobu. Don't miss the Black Cod with Miso as you take in the architecture which evokes the beauty of a Japanese countryside. And be adventurous with the sake pairings!",
-//      "StartTime":1267095600,
-//      "DID":"777",
-//      "FinePrint":"Limit 1 per table. Tax and Gratuity not included. Dine-in only. No cash back. Not valid with other offers.",
-//      "IsOn":"1",
-//      "Value":"45.00",
-//      "RewardShare":"5",
-//      "Expiration":1299718800,
-//      "RewardYelp":"0",
-//      "Ref2":null,
-//      "ZipsOn":"1",
-//      "Ref1":null,
-//      "UrlTitle":"nobu-deal",
-//      "SID":"1",
-//      "Cost":"35.00",
-//      "Name":"$35 for Delicious Japanese Cuisine at Nobu ($45 Value)",
-//      "ShipData":"1",
-//      "EndTime":1291906800,
-//      "ExtCom":"0.00",
-//      "Featured":"0"
     }
     
     public String result;
@@ -160,7 +126,7 @@ public class GetDealsResponse {
     public String toString() {
         StringBuffer sb = new StringBuffer();
         
-        sb.append("GetDealsResponse [result=" + result + ", results=");
+        sb.append("GetDealsResponse [result=" + result + ", results=\n");
         
         for (Deal deal : results) {
             sb.append("  " + deal.toString() + "\n");
