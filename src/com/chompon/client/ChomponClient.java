@@ -9,7 +9,6 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.codec.net.URLCodec;
 import org.apache.commons.io.IOUtils;
 
 import com.google.gson.Gson;
@@ -428,6 +427,29 @@ public class ChomponClient {
         Gson gson = new GsonBuilder().create();
         
         return gson.fromJson(response, AddCreditResponse.class);
+    }
+    
+    /**
+     * This gets what credit has been allocated to the users. It returns the
+     * amount of the credit, as well as the date when the credit was issued, and
+     * how much was used. This only pulls in credits which haven't been fully
+     * redeemed.
+     * 
+     * @param userId User ID
+     * @throws IOException On any HTTP error or response parse error
+     */
+    public GetCreditResponse getCredit(String userId) throws IOException {
+        Map<String, String> params = new HashMap<String, String>();
+
+        params.put("method", "getCredit");
+
+        params.put("uid", userId);
+
+        String response =  executeRequest(params);
+        
+        Gson gson = new GsonBuilder().create();
+        
+        return gson.fromJson(response, GetCreditResponse.class);
     }
     
     private String executeRequest(Map<String, String> params) throws IOException {
