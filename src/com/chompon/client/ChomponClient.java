@@ -5,9 +5,11 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.codec.net.URLCodec;
 import org.apache.commons.io.IOUtils;
 
 import com.google.gson.Gson;
@@ -361,6 +363,45 @@ public class ChomponClient {
             params.put("zip", zip);
         }
 
+        String response =  executeRequest(params);
+        
+        return response;
+    }
+
+    /**
+     * Generate an RSS Feed of deals for a zip code and/or specific publisher
+     * 
+     * @param filterByPublisherId If true, only deals for the current publisher
+     *            id will be shown.
+     * @param zip Zip code
+     * @param rssFeedUrl URL of your RSS feed. This is so we can show your RSS
+     *            page rather than ChompOn's. Can be null.
+     * @param listPageWidgetUrl URL of your list page widget. This is so we can
+     *            show your list page rather than ChompOn's. Can be null.
+     * @param includeChomponXml If true, extra XML will be added to each RSS
+     *            item.
+     * @return Rss Feed
+     * @throws IOException On any HTTP error or response parse error.
+     */
+    public String getRSSFeed(boolean filterByPublisherId, String zip, String rssFeedUrl, String listPageWidgetUrl, boolean includeChomponXml) throws IOException {
+        
+        Map<String, String> params = new HashMap<String, String>();
+
+        params.put("method", "getRSSFeed");
+
+        params.put("usepd", filterByPublisherId ? "true" : "false");
+        params.put("zip", zip);
+        
+        if (rssFeedUrl != null) {
+            params.put("rss", URLEncoder.encode(rssFeedUrl, "UTF-8"));
+        }
+        
+        if (listPageWidgetUrl != null) {
+            params.put("list", URLEncoder.encode(listPageWidgetUrl, "UTF-8"));
+        }
+        
+        params.put("extra", includeChomponXml ? "true" : "false");
+        
         String response =  executeRequest(params);
         
         return response;

@@ -13,4 +13,5 @@
 #./chompon.sh --create-user-email-zip --pid 12 --auth 26a4171b3c38b868 --email fpotter@gmail.com --zip 94118
 #./chompon.sh --get-store-links --pid 12 --auth 26a4171b3c38b868 --sid 3
 #./chompon.sh --refund-coupon --pid 12 --auth 26a4171b3c38b868 --cd 625846413
-./chompon.sh --get-deal-seo --pid 12 --auth 26a4171b3c38b868 --did 987
+#./chompon.sh --get-deal-seo --pid 12 --auth 26a4171b3c38b868 --did 987
+./chompon.sh --get-rss-feed --pid 12 --auth 26a4171b3c38b868 --zip 94306
