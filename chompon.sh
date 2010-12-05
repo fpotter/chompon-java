@@ -6,4 +6,4 @@ do
   OUR_CLASSPATH=${OUR_CLASSPATH}:${i}
 done
 
-java -cp $OUR_CLASSPATH Main $*
+java -cp $OUR_CLASSPATH com.chompon.client.CommandLineTool $*

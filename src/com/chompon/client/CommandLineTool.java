@@ -1,3 +1,4 @@
+package com.chompon.client;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
@@ -6,17 +7,9 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 
-import com.chompon.client.AddCreditResponse;
-import com.chompon.client.ChomponClient;
-import com.chompon.client.CreateUserEmailZipResponse;
-import com.chompon.client.GetCouponInfoResponse;
-import com.chompon.client.GetCreditResponse;
-import com.chompon.client.GetDealsResponse;
-import com.chompon.client.GetStoreLinksResponse;
-import com.chompon.client.GetUserInfoResponse;
 
 
-public class Main {
+public class CommandLineTool {
 
     @SuppressWarnings("static-access")
     public static void getDeals(String[] args) {
