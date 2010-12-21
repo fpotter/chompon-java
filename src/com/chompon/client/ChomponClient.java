@@ -118,6 +118,28 @@ public class ChomponClient {
     }
     
     /**
+     * Get information about a particular store. Get all of them based on a publisher-id, or a particular store based on a store-id.
+     * @param sid Id of store to show, or null to show all
+     * @return A list of stores
+     * @throws IOException On any HTTP error or response parse error.
+     */
+    public GetStoresResponse getStores(String sid) throws IOException {
+        Map<String, String> params = new HashMap<String, String>();
+        
+        params.put("method", "getStores");
+        
+        if (sid != null) {
+            params.put("sid", sid);
+        }
+        
+        String response =  executeRequest(params);
+        
+        Gson gson = new GsonBuilder().create();
+        
+        return gson.fromJson(response, GetStoresResponse.class);
+    }
+    
+    /**
      * Get info about a specific user. Must specify either UID or email
      * 
      * @param uid User's ID
