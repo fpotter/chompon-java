@@ -746,6 +746,51 @@ public class CommandLineTool {
             System.err.println("ERROR: " + ex);
         }
     }
+    
+    @SuppressWarnings("static-access")
+    public static void verifyUser(String[] args) {
+        Options options = new Options();
+        
+        options.addOption(OptionBuilder.withLongOpt("pid").withDescription("Chompon Publisher ID").hasArg(true).isRequired().create());
+        options.addOption(OptionBuilder.withLongOpt("auth").withDescription("Chompon Auth Key").hasArg(true).isRequired().create());
+        
+        options.addOption(OptionBuilder.withLongOpt("email").withDescription("Email Address").hasArg(true).create());
+        options.addOption(OptionBuilder.withLongOpt("password").withDescription("Password").hasArg(true).create());
+
+        CommandLine line;
+        
+        try {
+            CommandLineParser parser = new PosixParser();
+            line = parser.parse( options, args );
+        } catch (ParseException ex) {
+            System.err.println(ex.getMessage());
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("chompon.sh --get-stores", options );
+            return;
+        }
+        
+        String pid = line.getOptionValue("pid");
+        String auth = line.getOptionValue("auth");
+        
+        if (pid == null && auth == null) {
+            System.out.println("ERROR: pid and auth must be supplied.");
+            return;
+        }
+
+        String email = line.getOptionValue("email");
+        String password = line.getOptionValue("password");
+        
+        try {
+            ChomponClient cc = new ChomponClient(pid, auth);
+            
+            GetUserInfoResponse resp = cc.verifyUser(email, password);
+            
+            System.out.println(resp.toString());
+            
+        } catch (Exception ex) {
+            System.err.println("ERROR: " + ex);
+        }
+    }
 
 
     /**
@@ -772,6 +817,7 @@ public class CommandLineTool {
         options.addOption(OptionBuilder.withLongOpt("add-credit").withDescription("Add Credit").create());
         options.addOption(OptionBuilder.withLongOpt("get-credit").withDescription("Get credit issued to a user").create());
         options.addOption(OptionBuilder.withLongOpt("get-stores").withDescription("Get info about stores").create());
+        options.addOption(OptionBuilder.withLongOpt("verify-user").withDescription("Verify user").create());
         
         if (args.length == 0) {
             HelpFormatter formatter = new HelpFormatter();
@@ -819,6 +865,8 @@ public class CommandLineTool {
                     getCredit(remainingArgs);                    
                 } else if (line.hasOption("get-stores")) {
                     getStores(remainingArgs);                    
+                } else if (line.hasOption("verify-user")) {
+                    verifyUser(remainingArgs);                    
                 } else {
                     HelpFormatter formatter = new HelpFormatter();
                     formatter.printHelp("admintool.sh", options );

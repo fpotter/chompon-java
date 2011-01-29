@@ -479,6 +479,29 @@ public class ChomponClient {
         return gson.fromJson(response, GetCreditResponse.class);
     }
     
+    /**
+     * Verifies username and password for a user.  Returns the user info.
+     * 
+     * @param emailAddress Email address
+     * @param password Password
+     * @return User info
+     * @throws IOException On any HTTP error or response parse error
+     */
+    public GetUserInfoResponse verifyUser(String emailAddress, String password) throws IOException {
+        Map<String, String> params = new HashMap<String, String>();
+
+        params.put("method", "verifyUser");
+
+        params.put("email", emailAddress);
+        params.put("password", password);
+
+        String response =  executeRequest(params);
+        
+        Gson gson = new GsonBuilder().create();
+        
+        return gson.fromJson(response, GetUserInfoResponse.class);
+    }
+    
     private String executeRequest(Map<String, String> params) throws IOException {
         
         params.put("pid", publisherId);

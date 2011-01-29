@@ -1,5 +1,6 @@
 #!/bin/sh
 
+./chompon.sh --verify-user --pid 12 --auth 26a4171b3c38b868 --email test@chompon.com --password tester
 ./chompon.sh --get-stores --pid 12 --auth 26a4171b3c38b868
 ./chompon.sh --get-deals --pid 12 --auth 26a4171b3c38b868
 ./chompon.sh --get-deals --pid 12 --auth 26a4171b3c38b868 --did 987
