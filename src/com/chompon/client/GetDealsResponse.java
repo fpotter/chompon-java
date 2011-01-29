@@ -105,17 +105,22 @@ public class GetDealsResponse extends ChomponResponse {
 
         @SerializedName("Featured")
         public String featured;
+        
+        @SerializedName("MaxPerUser")
+        public String maxPerUser;
 
         @Override
         public String toString() {
             return "Deal [certNote=" + certNote + ", cost=" + cost + ", did=" + did + ", endTime=" + endTime + ", expiration=" + expiration + ", extDom="
                     + extDom + ", featured=" + featured + ", finePrint=" + finePrint + ", image=" + image + ", imageSmall=" + imageSmall + ", imageUrl="
-                    + imageUrl + ", imageVersion=" + imageVersion + ", isOn=" + isOn + ", isPoints=" + isPoints + ", name=" + name + ", overview="
-                    + overview + ", pid=" + pid + ", ref1=" + ref1 + ", ref2=" + ref2 + ", ref3=" + ref3 + ", ref4=" + ref4 + ", rewardEmail="
-                    + rewardEmail + ", rewardFacebook=" + rewardFacebook + ", rewardShare=" + rewardShare + ", rewardTwitter=" + rewardTwitter
-                    + ", rewardYelp=" + rewardYelp + ", shipData=" + shipData + ", sid=" + sid + ", startTime=" + startTime + ", tipPoint=" + tipPoint
-                    + ", urlTitle=" + urlTitle + ", value=" + value + ", zipsOn=" + zipsOn + "]";
+                    + imageUrl + ", imageVersion=" + imageVersion + ", isOn=" + isOn + ", isPoints=" + isPoints + ", maxPerUser=" + maxPerUser + ", name="
+                    + name + ", overview=" + overview + ", pid=" + pid + ", ref1=" + ref1 + ", ref2=" + ref2 + ", ref3=" + ref3 + ", ref4=" + ref4
+                    + ", rewardEmail=" + rewardEmail + ", rewardFacebook=" + rewardFacebook + ", rewardShare=" + rewardShare + ", rewardTwitter="
+                    + rewardTwitter + ", rewardYelp=" + rewardYelp + ", shipData=" + shipData + ", sid=" + sid + ", startTime=" + startTime + ", tipPoint="
+                    + tipPoint + ", urlTitle=" + urlTitle + ", value=" + value + ", zipsOn=" + zipsOn + "]";
         }
+
+       
     }
 
     public List<Deal> results;
